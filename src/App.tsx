@@ -1,24 +1,21 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import {z} from 'zod';
 
 function App() {
+  function handleButtonClick(){
+    const UserSchema = z.object({
+      username: z.string(),
+    })
+    const user = {username: "aa"}
+    console.log(UserSchema.parse(user))
+  }
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
       </header>
+      <main>
+        <button onClick={handleButtonClick}>Button</button>
+      </main>
     </div>
   );
 }
