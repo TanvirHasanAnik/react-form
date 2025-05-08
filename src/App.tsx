@@ -10,7 +10,12 @@ import {zodResolver} from '@hookform/resolvers/zod';
 const formSchema = z.object({
   username: z.string().nonempty("Username is required").min(3,"Username must be atleast 3 characters long").max(15, "username can't be more than 15 characters"),
   password: z.string().nonempty("Password is required").min(6,"password must contain atleast 6 characters").max(25,"password must not exceed 25 characters"),
-  age: z.number().gt(18,"Must be an adult").lt(150,"Give a valid age").refine((value) => !isNaN(value), "Age is required"),
+  age: z.string()
+  .nonempty({ message: "Age is required" })
+  .transform((val) => Number(val)) 
+  .pipe(
+    z.number().gt(18, { message: "Age must be greater than 18" }).lt(150, { message: "Age must be less than 150" })
+  ),
   email: z.string().nonempty("Email is required").email("invalid email"),
   isStudent: z.boolean(),
   gender: z.enum(["male","female","others"],{required_error: "Please select gender"}),
@@ -59,7 +64,7 @@ function App() {
           {errors.password && <p style={{ color: 'red' }}>{errors.password.message}</p>}
 
           <label htmlFor="age">Age</label>
-          <input type="number" id="age" {...register("age",{ valueAsNumber: true })}/>
+          <input type="number" id="age" {...register("age")}/>
           {errors.age && <p style={{ color: 'red' }}>{errors.age.message}</p>}
 
           <label htmlFor="email">Email</label>
@@ -72,6 +77,7 @@ function App() {
 
           <label htmlFor="gender">Gender</label>
           <select id="gender" {...register("gender")}>
+            <option value="" disabled selected hidden>Select gender</option>
             <option value = "male">Male</option>
             <option value = "female">Female</option>
             <option value = "others">Others</option>
