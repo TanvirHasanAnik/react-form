@@ -3,6 +3,7 @@ import {z} from 'zod'
 import {useForm} from 'react-hook-form'
 import {DevTool} from "@hookform/devtools"
 import {zodResolver} from '@hookform/resolvers/zod';
+import { VKInput } from "@vivakits/react-components";
 
 const formSchema = z.object({
   username: z.string().nonempty("Username is required").min(3,"Username must be atleast 3 characters long").max(15, "username can't be more than 15 characters"),
