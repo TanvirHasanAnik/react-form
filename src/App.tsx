@@ -12,7 +12,7 @@ const formSchema = z.object({
 type formValues = z.infer<typeof formSchema>;
 
 function App() {
-  const form = useForm<formValues>({resolver: zodResolver(formSchema)});
+  const form = useForm<formValues>({resolver: zodResolver(formSchema), mode: "onBlur"});
   const {register, control, handleSubmit, formState: { errors }} = form;
 
   const onSubmit = function (data: formValues){
