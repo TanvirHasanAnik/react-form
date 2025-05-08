@@ -8,8 +8,10 @@ import {zodResolver} from '@hookform/resolvers/zod';
 const formSchema = z.object({
   username: z.string().nonempty("Username is required").min(3,"Username must be atleast 3 characters long").max(15, "username can't be more than 15 characters"),
   password: z.string().nonempty("Password is required").min(6,"password must contain atleast 6 characters").max(25,"password must not exceed 25 characters"),
-  age: z.number().gt(18,"Must be an adult").lt(150,"Give a valid age"),
-  email: z.string().nonempty("Email is required").email("invalid email")
+  age: z.number().gt(18,"Must be an adult").lt(150,"Give a valid age").refine((value) => !isNaN(value), "Age is required"),
+  email: z.string().nonempty("Email is required").email("invalid email"),
+  date: z.string().nonempty("Please provide a date"),
+  time: z.string().nonempty("Please provide a time"),
 })
 
 type formValues = z.infer<typeof formSchema>;
@@ -59,6 +61,14 @@ function App() {
           <label htmlFor="email">Email</label>
           <input type="email" id="email" {...register("email")}/>
           {errors.email && <p style={{ color: 'red' }}>{errors.email.message}</p>}
+
+          <label htmlFor="date">Date</label>
+          <input type="date" id="date" {...register("date")}/>
+          {errors.date && <p style={{ color: 'red' }}>{errors.date.message}</p>}
+
+          <label htmlFor="time">Time</label>
+          <input type="time" id="time" {...register("time")}/>
+          {errors.time && <p style={{ color: 'red' }}>{errors.time.message}</p>}
 
           <button type='submit'>Submit</button>
         </form>
