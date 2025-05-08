@@ -3,10 +3,12 @@ import {z} from 'zod'
 import {useForm} from 'react-hook-form'
 import {DevTool} from "@hookform/devtools"
 import {zodResolver} from '@hookform/resolvers/zod';
-import { VKInput } from "@vivakits/react-components";
+//import { VKInput } from "@vivakits/react-components";
 
 const formSchema = z.object({
   username: z.string().nonempty("Username is required").min(3,"Username must be atleast 3 characters long").max(15, "username can't be more than 15 characters"),
+  password: z.string().nonempty("Password is required").min(6,"password must contain atleast 6 characters").max(25,"password must not exceed 25 characters"),
+  age: z.number().gt(18,"Must be an adult").lt(150,"Give a valid age"),
   email: z.string().nonempty("Email is required").email("invalid email")
 })
 
@@ -35,6 +37,7 @@ function App() {
     }
   }
    console.log('rendered')
+   console.log(errors)
   return (
     <div className="App">
       <header className="App-header">
@@ -44,6 +47,14 @@ function App() {
           <label htmlFor="username">Username</label>
           <input type="text" id="username" {...register("username")}/>
           {errors.username && <p style={{ color: 'red' }}>{errors.username.message}</p>}
+
+          <label htmlFor="password">Password</label>
+          <input type="password" id="password" {...register("password")}/>
+          {errors.password && <p style={{ color: 'red' }}>{errors.password.message}</p>}
+
+          <label htmlFor="age">Age</label>
+          <input type="number" id="age" {...register("age",{ valueAsNumber: true })}/>
+          {errors.age && <p style={{ color: 'red' }}>{errors.age.message}</p>}
 
           <label htmlFor="email">Email</label>
           <input type="email" id="email" {...register("email")}/>
